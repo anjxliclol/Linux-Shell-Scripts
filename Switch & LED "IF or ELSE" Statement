@@ -1,0 +1,24 @@
+import RPi.GPIO as GPIO
+import time
+
+blink_led = 5
+pb_switch = 40
+
+GPIO.setmode(GPIO.BOARD) # Note:physical pins 
+GPIO.setup(blink_led, GPIO.OUT)
+GPIO.setup(pb_switch, GPIO.IN)
+
+try:
+    while True:
+        pb_switch_state = GPIO.input(pb_switch)
+        print("Push Button State:", pb_switch_state)
+        
+        if pb_switch_state == 1:  # If the push button is pressed
+            GPIO.output(blink_led, GPIO.HIGH)  # Turn on the LED
+        else:
+            GPIO.output(blink_led, GPIO.LOW)  # Turn off the LED
+            
+        time.sleep(0.1)  # Add a small delay to avoid excessive CPU usage
+
+except KeyboardInterrupt:
+    GPIO.cleanup()  # Cleanup GPIO settings on keyboard interrupt
